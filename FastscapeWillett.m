@@ -172,37 +172,35 @@ end
 % minima (those that are their own receiver), and proceed through the list
 % of donors, recursively. For this we will need to de?ne a recursive
 % routine/function (i.e. a routine that can call itself).
+% 
+% % Pass this to a recursive function that will reorder the nodes for us
+% baselevels = rec(rec==index_vector);
 
-% Pass this to a recursive function that will reorder the nodes for us
-baselevels = rec(rec==index_vector);
+global  stack nstack
+stack = [];
+nstack= 0;
 
-global i_stack stack
-stack = nan(nn,1);
-i_stack= 1;
-
-for qq = 1:nn
-    length(baselevels)
-    ij = baselevels(qq);
-    stack(ij,i_stack) = create_stack(ij,i_stack);
-end
-
-
-function create_stack(ij)
-%This is the recursive function used to build the stack of nodes
-
-% global i_stack ndon donor
-stack(i_stack) = ij;
-i_stack = i_stack + 1;
-
-if ndon(ij) > 0
-    
-    for q = 1:ndon(ij)
-        k = donor(ij,q);
-        create_stack(k);
+for ij = 1:nn
+    if rec(ij,1)==ij
+        Add_to_stack(ij);
     end
+end 
+
+stack;
+
+
+% Compute Drainage Area
+
+% Having built the stack, we can now compute the drainage area by summing
+% elemental areas down the network, i.e. in the reverse stack order.
+
+rev_stack=fliplr(stack); %reverse the stack
+drn_area = dx*dy*ones(1:nn);
+
+for ij = 1:nn
+    ijk = rev_stack(ij);
+    drn_area(rec(ijk)) = drn_area(ijk) + drn_area(rec(ijk));
 end
-
-
 
 
 
