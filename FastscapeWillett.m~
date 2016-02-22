@@ -180,8 +180,7 @@ global i_stack stack
 stack = nan(nn,1);
 i_stack= 1;
 
-for qq = 1:nn
-    length(baselevels)
+for qq = 1:length(baselevels)
     ij = baselevels(qq);
     stack(ij,i_stack) = create_stack(ij,i_stack);
 end
@@ -191,17 +190,16 @@ function create_stack(ij)
 %This is the recursive function used to build the stack of nodes
 
 % global i_stack ndon donor
+
 stack(i_stack) = ij;
+
 i_stack = i_stack + 1;
 
-if ndon(ij) > 0
-    
-    for q = 1:ndon(ij)
-        k = donor(ij,q);
-        create_stack(k);
-    end
+for q = 1:ndon(ij)
+    k = donor(ij,q);
+    create_stack(k);
 end
-
+end
 
 
 
