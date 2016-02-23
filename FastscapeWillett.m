@@ -176,9 +176,10 @@ end
 % % Pass this to a recursive function that will reorder the nodes for us
 % baselevels = rec(rec==index_vector);
 
-global  stack nstack
+global  stack nstack color
 stack = [];
-nstack= 0;
+nstack = 0;
+color = [];
 
 for ij = 1:nn
     if rec(ij,1)==ij
@@ -187,6 +188,8 @@ for ij = 1:nn
 end 
 
 stack;
+
+% Store a color for each catchment
 
 
 % Compute Drainage Area
@@ -199,7 +202,9 @@ drn_area = dx*dy*ones(1:nn);
 
 for ij = 1:nn
     ijk = rev_stack(ij);
-    drn_area(rec(ijk)) = drn_area(ijk) + drn_area(rec(ijk));
+    if rec(ijk)~=ijk
+        drn_area(rec(ijk)) = drn_area(ijk) + drn_area(rec(ijk));
+    end
 end
 
 

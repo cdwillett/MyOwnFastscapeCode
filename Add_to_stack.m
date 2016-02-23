@@ -3,7 +3,8 @@ function Add_to_stack(ij)
    % Go through list of donors and then the donors of the donors. Start
    % with a node along the boundary or a local minima
    
-   global ndon donor stack nstack
+   global ndon donor stack nstack 
+   %color
    
    nstack=nstack+1;
    stack(nstack)=ij;
