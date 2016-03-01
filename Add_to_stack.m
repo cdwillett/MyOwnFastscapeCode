@@ -11,7 +11,7 @@ function Add_to_stack(ij)
    
    if ndon(ij)~=0; %if there are donors to a node then proceed
        for kk=1:ndon(ij)%find their donors
-           Add_to_stack(donor(ij,kk)); % find the donors of each donor
+           Add_to_stack(donor(ij,kk)); % find the donors of each donor until ndon(ij)=0
        end
    end
 end

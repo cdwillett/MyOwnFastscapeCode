@@ -12,7 +12,7 @@ ny = 101;
 nn = nx*ny; % the total number of points
 dx = xl/(nx-1); % x-dimension unit
 dy = yl/(ny-1); % y-dimension unit
-dt = 1e10; %timestep in yr
+dt = 1000.; %timestep in yr
 nstep = 1000; % number of steps
 % lack of period indicates that what you've put is an integer
 % period means a number, not necessarily an integer (FORTRAN thing)
@@ -40,23 +40,37 @@ u=2e-3; % uplift rate
 % Create an array to store the height and add random noise at each point
 h = rand(nn,1); % one column with nn rows (NOT identifying entries by row#
 % and column#)
-% 
-% for l = 1:nx
-%     for k = 1:ny
-%         h(k,1) = k;
-%     end
-% end
-% 
-% % R = reshape(h,nx,ny);
+%h = [0 0 0 0; 0 10 15 0; 0 9 7 0; 0 0 0 0];
+for l = 1:nx
+    for k = 1:ny
+        h(k,1) = k;
+    end
+end
+
+% R = reshape(h,nx,ny);
 % figure
 % pcolor(R)
 
 % To find oneself in the matrix given x and y positions (the way we didn't
 % set it up), use the following code:
 
+Are_you_a_boundary = zeros(1,nn);
+
 for j = 1:ny
     for i = 1:nx
         ij = i+(j-1)*nx;
+        if j == 1
+            Are_you_a_boundary(ij) = 1;
+        end
+        if i == 1
+            Are_you_a_boundary(ij) = 1;
+        end
+        if j == ny
+            Are_you_a_boundary(ij) = 1;
+        end
+        if i == nx
+            Are_you_a_boundary(ij) = 1;
+        end
     end
 end
 
@@ -227,7 +241,7 @@ for ij = 1:nn
     ijk = stack(ij);
     if rec(ijk)~=ijk; % Do not erode pits and borderlands
         c = (k*dt*drn_area(ijk).^m)/len(ijk);
-        h(ijk) = (h(ijk) + c*(h(rec(ijk))))/(1+c);
+        h_new(ijk)_ = h(ijk)
     end
 end
 
